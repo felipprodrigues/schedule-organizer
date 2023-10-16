@@ -35,3 +35,7 @@ export const Preview = styled('div', {
     display: 'none',
   },
 });
+
+export const FormError = styled(Text, {
+  color: '#f75a68',
+});
