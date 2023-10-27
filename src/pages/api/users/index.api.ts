@@ -35,7 +35,7 @@ export default async function handler(
 
   setCookie({ res }, '@schedule-organizer:userId', user.id, {
     maxAge: 60 * 60 * 24 * 7, // 7 days
-    path: '/',
+    path: '/', // all routes can access this cookie
   });
 
   // status 201 to inform 'creation'
