@@ -14,7 +14,7 @@ export default function Register() {
 
   const hasAuthError = !!router.query.error;
 
-  console.log(session.status, 'aqui');
+  console.log(session, ' aqui');
 
   const isSignedIn = session.status === 'authenticated';
 
