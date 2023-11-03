@@ -12,6 +12,11 @@ export const IntervalsContainer = styled('div', {
   marginBottom: '$4',
 });
 
+export const IntervalTime = styled('div', {
+  display: 'flex',
+  gap: '$2',
+});
+
 export const IntervalItem = styled('div', {
   display: 'flex',
   alignItems: 'center',
