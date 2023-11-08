@@ -5,8 +5,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { parseCookies, destroyCookie } from 'nookies';
 
 export function PrismaAdapter(
-  req: NextApiRequest,
-  res: NextApiResponse
+  req: NextApiRequest | NextPageContext['req'],
+  res: NextApiResponse | NextPageContext['res']
 ): Adapter {
   return {
     async createUser(user) {

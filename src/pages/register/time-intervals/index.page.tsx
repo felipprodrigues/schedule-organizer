@@ -170,6 +170,7 @@ export default function TimeIntervals() {
             return (
               <IntervalItem key={field.id}>
                 <IntervalDay>
+                  {/* Controller inserts a non visual html element to handle form data */}
                   <Controller
                     name={`intervals.${index}.enabled`}
                     control={control}
