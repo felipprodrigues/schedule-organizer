@@ -2,7 +2,6 @@
 import { prisma } from '@/lib/prisma';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { date } from 'zod';
 
 export default async function handle(
   req: NextApiRequest,
@@ -34,7 +33,7 @@ export default async function handle(
   const isPastDate = referenceDate.endOf('day').isBefore(new Date());
 
   if (isPastDate) {
-    return res.json({ availability: [] });
+    return res.json({ possibleTimes: [], availableTimes: [] });
   }
 
   const userAvailability = await prisma.userTimeInterval.findFirst({
@@ -45,7 +44,7 @@ export default async function handle(
   });
 
   if (!userAvailability) {
-    return res.json({ availability: [] });
+    return res.json({ possibleTimes: [], availableTimes: [] });
   }
 
   const { time_start_in_minutes, time_end_in_minutes } = userAvailability;
@@ -59,5 +58,27 @@ export default async function handle(
     }
   );
 
-  return res.json({ possibleTimes });
+  // Find all schedules set on the current day by any user
+  const blockedTimes = await prisma.scheduling.findMany({
+    select: {
+      date: true,
+    },
+    where: {
+      user_id: user.id,
+      date: {
+        // greater than or equal
+        gte: referenceDate.set('hour', startHour).toDate(),
+        // less than or equal
+        lte: referenceDate.set('hour', endHour).toDate(),
+      },
+    },
+  });
+
+  const availableTimes = possibleTimes.filter((time) => {
+    return !blockedTimes.some(
+      (blockedTime) => blockedTime.date.getHours() === time
+    );
+  });
+
+  return res.json({ possibleTimes, availableTimes });
 }
