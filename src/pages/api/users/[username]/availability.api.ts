@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable camelcase */
 import { prisma } from '@/lib/prisma';
 import dayjs from 'dayjs';
@@ -75,9 +76,13 @@ export default async function handle(
   });
 
   const availableTimes = possibleTimes.filter((time) => {
-    return !blockedTimes.some(
+    const isTimeBlocked = blockedTimes.some(
       (blockedTime) => blockedTime.date.getHours() === time
     );
+
+    const isTimeInPast = referenceDate.set('hour', time).isBefore(new Date());
+
+    return !isTimeBlocked && !isTimeInPast;
   });
 
   return res.json({ possibleTimes, availableTimes });
