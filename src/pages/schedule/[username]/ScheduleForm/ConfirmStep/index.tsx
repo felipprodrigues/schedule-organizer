@@ -1,25 +1,24 @@
-import { Button, Text, TextInput } from '@ignite-ui/react';
-import { ConfirmForm, FormActions, FormError, FormHeader } from './styles';
-import { CalendarBlank, Clock } from 'phosphor-react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
-import { api } from '@/lib/axios';
-import email from 'next-auth/providers/email';
+import { Button, Text, TextInput } from '@ignite-ui/react'
+import { ConfirmForm, FormActions, FormError, FormHeader } from './styles'
+import { CalendarBlank, Clock } from 'phosphor-react'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import dayjs from 'dayjs'
+import { useRouter } from 'next/router'
+import { api } from '@/lib/axios'
 
 const confirmFormSchema = z.object({
   name: z.string().min(3, { message: 'O nome precisa no mínimo 3 caracteres' }),
   email: z.string().email({ message: 'Digite um email válido' }),
   observations: z.string().nullable(),
-});
+})
 
-type ConfirmFormData = z.infer<typeof confirmFormSchema>;
+type ConfirmFormData = z.infer<typeof confirmFormSchema>
 
 interface ConfirmStepProps {
-  schedulingDate: Date;
-  onCancelConfirmation: () => void;
+  schedulingDate: Date
+  onCancelConfirmation: () => void
 }
 
 export function ConfirmStep({
@@ -32,26 +31,26 @@ export function ConfirmStep({
     formState: { errors, isSubmitting },
   } = useForm<ConfirmFormData>({
     resolver: zodResolver(confirmFormSchema),
-  });
+  })
 
-  const router = useRouter();
-  const username = String(router.query.username);
+  const router = useRouter()
+  const username = String(router.query.username)
 
   async function handleConfirmScheduling(data: ConfirmFormData) {
-    const { name, email, observations } = data;
+    const { name, email, observations } = data
 
     await api.post(`/users/${username}/schedule`, {
       name,
       email,
       observations,
       date: schedulingDate,
-    });
+    })
 
-    onCancelConfirmation();
+    onCancelConfirmation()
   }
 
-  const describedDate = dayjs(schedulingDate).format('DD[ de ]MMMM[ de ]YYYY');
-  const describedTime = dayjs(schedulingDate).format('HH:mm[h]');
+  const describedDate = dayjs(schedulingDate).format('DD[ de ]MMMM[ de ]YYYY')
+  const describedTime = dayjs(schedulingDate).format('HH:mm[h]')
 
   return (
     <ConfirmForm as="form" onSubmit={handleSubmit(handleConfirmScheduling)}>
@@ -93,5 +92,5 @@ export function ConfirmStep({
         </Button>
       </FormActions>
     </ConfirmForm>
-  );
+  )
 }

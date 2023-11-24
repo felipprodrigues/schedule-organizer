@@ -1,30 +1,30 @@
 /* eslint-disable prettier/prettier */
-import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react';
-import { ArrowRight, Check } from 'phosphor-react';
+import { Button, Heading, MultiStep, Text } from '@ignite-ui/react'
+import { ArrowRight, Check } from 'phosphor-react'
 
-import { Container, Form, Header } from '../styles';
-import { AuthError, ConnectBox, ConnectItem } from './styles';
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { NextSeo } from 'next-seo';
+import { Container, Header } from '../styles'
+import { AuthError, ConnectBox, ConnectItem } from './styles'
+import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 export default function Register() {
   // async function handleRegister() {}
-  const session = useSession();
-  const router = useRouter();
+  const session = useSession()
+  const router = useRouter()
 
-  const hasAuthError = !!router.query.error;
+  const hasAuthError = !!router.query.error
 
-  console.log(session, ' aqui');
+  console.log(session, ' aqui')
 
-  const isSignedIn = session.status === 'authenticated';
+  const isSignedIn = session.status === 'authenticated'
 
   async function handleConnectCalendar() {
-    await signIn('google');
+    await signIn('google')
   }
 
   async function handleNavigateToNextStep() {
-    await router.push('/register/time-intervals');
+    await router.push('/register/time-intervals')
   }
 
   return (
@@ -81,5 +81,5 @@ export default function Register() {
         </ConnectBox>
       </Container>
     </>
-  );
+  )
 }

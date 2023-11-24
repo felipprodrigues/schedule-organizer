@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
 import {
   Button,
@@ -6,9 +7,9 @@ import {
   MultiStep,
   Text,
   TextInput,
-} from '@ignite-ui/react';
+} from '@ignite-ui/react'
 
-import { Container, Header } from '../styles';
+import { Container, Header } from '../styles'
 import {
   FormError,
   IntervalBox,
@@ -17,16 +18,16 @@ import {
   IntervalItem,
   IntervalTime,
   IntervalsContainer,
-} from './styles';
-import { ArrowRight } from 'phosphor-react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { getWeekDays } from '@/utils/getWeekDays';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { convertTimeInMinutes } from '@/utils/convertTimeInMinutes';
-import { api } from '@/lib/axios';
-import { useRouter } from 'next/router';
-import { NextSeo } from 'next-seo';
+} from './styles'
+import { ArrowRight } from 'phosphor-react'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { getWeekDays } from '@/utils/getWeekDays'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { convertTimeInMinutes } from '@/utils/convertTimeInMinutes'
+import { api } from '@/lib/axios'
+import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 const timeIntervalsFormInputSchema = z.object({
   intervals: z.array(
@@ -37,7 +38,7 @@ const timeIntervalsFormInputSchema = z.object({
       endTime: z.string(),
     })
   ),
-});
+})
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -61,25 +62,25 @@ const timeIntervalsFormSchema = z.object({
           weekDay: interval.weekDay,
           startTimeInMinutes: convertTimeInMinutes(interval.startTime),
           endTimeInMinutes: convertTimeInMinutes(interval.endTime),
-        };
-      });
+        }
+      })
     })
     .refine(
       (intervals) => {
         return intervals.every(
           (interval) =>
             interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes
-        );
+        )
       },
       {
         message:
           'O horário de término deve ser pelo menos 1h do horário de início',
       }
     ),
-});
+})
 
-type TimeIntervalsFormInput = z.infer<typeof timeIntervalsFormInputSchema>;
-type TimeIntervalsFormOutput = z.infer<typeof timeIntervalsFormSchema>;
+type TimeIntervalsFormInput = z.infer<typeof timeIntervalsFormInputSchema>
+type TimeIntervalsFormOutput = z.infer<typeof timeIntervalsFormSchema>
 
 export default function TimeIntervals() {
   const {
@@ -136,25 +137,25 @@ export default function TimeIntervals() {
         },
       ],
     },
-  });
+  })
 
   const { fields } = useFieldArray({
     // usada para acessar useForm defaultValues - intervals
     control,
     name: 'intervals',
-  });
+  })
 
-  const weekDays = getWeekDays();
+  const weekDays = getWeekDays()
 
-  const intervals = watch('intervals');
-  const router = useRouter();
+  const intervals = watch('intervals')
+  const router = useRouter()
 
   async function handleSetTimeIntervals(data: any) {
-    const formData = data as TimeIntervalsFormOutput;
+    const formData = data as TimeIntervalsFormOutput
 
-    await api.post('/users/time-intervals', formData);
+    await api.post('/users/time-intervals', formData)
 
-    await router.push('/register/update-profile');
+    await router.push('/register/update-profile')
   }
 
   return (
@@ -186,11 +187,11 @@ export default function TimeIntervals() {
                         return (
                           <Checkbox
                             onCheckedChange={(checked: boolean) => {
-                              field.onChange(checked === true);
+                              field.onChange(checked === true)
                             }}
                             checked={field.value}
                           />
-                        );
+                        )
                       }}
                     />
                     <Text>{weekDays[field.weekDay]}</Text>
@@ -217,7 +218,7 @@ export default function TimeIntervals() {
                     </IntervalInputs>
                   </IntervalTime>
                 </IntervalItem>
-              );
+              )
             })}
           </IntervalsContainer>
 
@@ -232,5 +233,5 @@ export default function TimeIntervals() {
         </IntervalBox>
       </Container>
     </>
-  );
+  )
 }

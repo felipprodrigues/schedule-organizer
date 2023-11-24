@@ -6,28 +6,27 @@ import {
   MultiStep,
   Text,
   TextArea,
-  TextInput,
-} from '@ignite-ui/react';
-import { Container, Header } from '../styles';
-import { ArrowRight } from 'phosphor-react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+} from '@ignite-ui/react'
+import { Container, Header } from '../styles'
+import { ArrowRight } from 'phosphor-react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormAnnotation, ProfileBox } from './styles';
-import { useSession } from 'next-auth/react';
-import { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
-import { buildNextAuthOptions } from '@/pages/api/auth/[...nextauth].api';
-import { api } from '@/lib/axios';
-import { useRouter } from 'next/router';
-import { NextSeo } from 'next-seo';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormAnnotation, ProfileBox } from './styles'
+import { useSession } from 'next-auth/react'
+import { GetServerSideProps } from 'next'
+import { getServerSession } from 'next-auth'
+import { buildNextAuthOptions } from '@/pages/api/auth/[...nextauth].api'
+import { api } from '@/lib/axios'
+import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 const updateProfileSchema = z.object({
   bio: z.string(),
-});
+})
 
-type UpdateProfileData = z.infer<typeof updateProfileSchema>;
+type UpdateProfileData = z.infer<typeof updateProfileSchema>
 
 export default function UpdateProfile() {
   const {
@@ -36,17 +35,17 @@ export default function UpdateProfile() {
     formState: { isSubmitting },
   } = useForm<UpdateProfileData>({
     resolver: zodResolver(updateProfileSchema),
-  });
+  })
 
-  const session = useSession();
-  const router = useRouter();
+  const session = useSession()
+  const router = useRouter()
 
   async function handleUpdateProfile(data: UpdateProfileData) {
     await api.put('/users/profile', {
       bio: data.bio,
-    });
+    })
 
-    await router.push(`/schedule/${session.data?.user.username}`);
+    await router.push(`/schedule/${session.data?.user.username}`)
   }
 
   return (
@@ -87,7 +86,7 @@ export default function UpdateProfile() {
         </ProfileBox>
       </Container>
     </>
-  );
+  )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -95,11 +94,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     req,
     res,
     buildNextAuthOptions(req, res)
-  );
+  )
 
   return {
     props: {
       session,
     },
-  };
-};
+  }
+}

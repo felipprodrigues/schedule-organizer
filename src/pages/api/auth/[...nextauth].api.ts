@@ -1,7 +1,8 @@
-import { PrismaAdapter } from '@/lib/auth/prisma.adapter';
-import { NextApiRequest, NextApiResponse, NextPageContext } from 'next';
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google';
+/* eslint-disable prettier/prettier */
+import { PrismaAdapter } from '@/lib/auth/prisma.adapter'
+import { NextApiRequest, NextApiResponse, NextPageContext } from 'next'
+import NextAuth, { NextAuthOptions } from 'next-auth'
+import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google'
 
 export function buildNextAuthOptions(
   req: NextApiRequest | NextPageContext['req'],
@@ -30,7 +31,7 @@ export function buildNextAuthOptions(
             username: '',
             email: profile.email,
             avatar_url: profile.picture,
-          };
+          }
         },
       }),
 
@@ -42,22 +43,22 @@ export function buildNextAuthOptions(
         if (
           !account?.scope?.includes('https://www.googleapis.com/auth/calendar')
         ) {
-          return '/register/connect-calendar/?error=permissions';
+          return '/register/connect-calendar/?error=permissions'
         }
 
-        return true;
+        return true
       },
 
       async session({ session, user }) {
         return {
           ...session,
           user,
-        };
+        }
       },
     },
-  };
+  }
 }
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  return await NextAuth(req, res, buildNextAuthOptions(req, res));
+  return await NextAuth(req, res, buildNextAuthOptions(req, res))
 }

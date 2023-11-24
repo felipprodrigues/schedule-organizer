@@ -1,43 +1,43 @@
 /* eslint-disable prettier/prettier */
-import { Calendar } from '@/components/Calendar';
+import { Calendar } from '@/components/Calendar'
 import {
   Container,
   TimePicker,
   TimePickerHeader,
   TimePickerItem,
   TimePickerList,
-} from './styles';
-import { useState } from 'react';
-import dayjs from 'dayjs';
-import { api } from '@/lib/axios';
-import { useRouter } from 'next/router';
-import { useQuery } from '@tanstack/react-query';
+} from './styles'
+import { useState } from 'react'
+import dayjs from 'dayjs'
+import { api } from '@/lib/axios'
+import { useRouter } from 'next/router'
+import { useQuery } from '@tanstack/react-query'
 
 interface Availability {
-  possibleTimes: number[];
-  availableTimes: number[];
+  possibleTimes: number[]
+  availableTimes: number[]
 }
 
 interface CalendarStepProps {
-  onSelectDateTime: (date: Date) => void;
+  onSelectDateTime: (date: Date) => void
 }
 
 export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  const router = useRouter();
-  const username = String(router.query.username);
+  const router = useRouter()
+  const username = String(router.query.username)
 
-  const isDateSelected = !!selectedDate;
+  const isDateSelected = !!selectedDate
 
-  const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null;
+  const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null
   const describedDate = selectedDate
     ? dayjs(selectedDate).format('DD[ de ]MMMM')
-    : null;
+    : null
 
   const selectedDateWithoutTime = selectedDate
     ? dayjs(selectedDate).format('YYYY-MM-DD')
-    : null;
+    : null
 
   const { data: availability } = useQuery<Availability>({
     queryKey: ['availability', selectedDateWithoutTime],
@@ -46,20 +46,20 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
         params: {
           date: dayjs(selectedDate).format('YYYY-MM-DD'),
         },
-      });
+      })
 
-      return res.data;
+      return res.data
     },
     enabled: !!selectedDate,
-  });
+  })
 
   function handleSelectTime(hour: number) {
     const dateWithTime = dayjs(selectedDate)
       .set('hour', hour)
       .startOf('hour')
-      .toDate();
+      .toDate()
 
-    onSelectDateTime(dateWithTime);
+    onSelectDateTime(dateWithTime)
   }
 
   return (
@@ -82,11 +82,11 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
                 >
                   {String(hour).padStart(2, '0')}:00h
                 </TimePickerItem>
-              );
+              )
             })}
           </TimePickerList>
         </TimePicker>
       )}
     </Container>
-  );
+  )
 }

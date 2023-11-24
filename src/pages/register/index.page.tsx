@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
-import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react';
-import { Container, Form, Header } from './styles';
-import { ArrowRight } from 'phosphor-react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { FormError } from '../home/styles';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { api } from '@/lib/axios';
-import { AxiosError } from 'axios';
-import { NextSeo } from 'next-seo';
+import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react'
+import { Container, Form, Header } from './styles'
+import { ArrowRight } from 'phosphor-react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { FormError } from '../home/styles'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { api } from '@/lib/axios'
+import { AxiosError } from 'axios'
+import { NextSeo } from 'next-seo'
 
 const registerFormSchema = z.object({
   username: z
@@ -23,9 +23,9 @@ const registerFormSchema = z.object({
   name: z
     .string()
     .min(3, { message: 'o nome precisa ter no mínimo 3 letras.' }),
-});
+})
 
-type RegisterFormData = z.infer<typeof registerFormSchema>;
+type RegisterFormData = z.infer<typeof registerFormSchema>
 
 export default function Register() {
   const {
@@ -35,31 +35,31 @@ export default function Register() {
     setValue,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerFormSchema),
-  });
+  })
 
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
     if (router.query.username) {
-      setValue('username', String(router.query.username));
+      setValue('username', String(router.query.username))
     }
-  }, [router.query?.username, setValue]);
+  }, [router.query?.username, setValue])
 
   async function handleRegister(data: RegisterFormData) {
     try {
       await api.post('/users', {
         name: data.name,
         username: data.name,
-      });
+      })
 
-      await router.push('/register/connect-calendar');
+      await router.push('/register/connect-calendar')
     } catch (err) {
       if (err instanceof AxiosError && err.response?.data?.message) {
-        alert(err.response.data.message);
-        return;
+        alert(err.response.data.message)
+        return
       }
 
-      console.error(err);
+      console.error(err)
     }
   }
 
@@ -107,5 +107,5 @@ export default function Register() {
         </Form>
       </Container>
     </>
-  );
+  )
 }
