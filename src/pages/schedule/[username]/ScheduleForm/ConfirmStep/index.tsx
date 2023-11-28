@@ -68,19 +68,28 @@ export function ConfirmStep({
 
       <label>
         <Text size="sm">Nome completo</Text>
-        <TextInput placeholder="Seu nome" {...register('name')} />
+        <TextInput
+          placeholder="Seu nome"
+          {...register('name')}
+          crossOrigin="anonymous"
+        />
         {errors.name && <FormError size="sm">{errors.name.message}</FormError>}
       </label>
       <label>
         <Text size="sm">Endereço de email</Text>
-        <TextInput placeholder="Seu nome" type="email" {...register('email')} />
+        <TextInput
+          placeholder="Seu nome"
+          type="email"
+          {...register('email')}
+          crossOrigin="anonymous"
+        />
         {errors.email && (
           <FormError size="sm">{errors.email.message}</FormError>
         )}
       </label>
       <label>
         <Text size="sm">Observações</Text>
-        <TextInput {...register('observations')} />
+        <TextInput {...register('observations')} crossOrigin="anonymous" />
       </label>
 
       <FormActions>

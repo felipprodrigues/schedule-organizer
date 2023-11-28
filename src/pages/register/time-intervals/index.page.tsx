@@ -201,6 +201,7 @@ export default function TimeIntervals() {
                     <IntervalInputs>
                       <TextInput
                         size="sm"
+                        crossOrigin="anonymous"
                         type="time"
                         step={60}
                         disabled={intervals[index].enabled === false}
@@ -210,6 +211,7 @@ export default function TimeIntervals() {
                     <IntervalInputs>
                       <TextInput
                         size="sm"
+                        crossOrigin="anonymous"
                         type="time"
                         step={60}
                         disabled={intervals[index].enabled === false}
